@@ -1,9 +1,12 @@
 package integralcalc;
+import java.util.*;
 
 public class Integral {
 	String s;
 	String sIntegral;
+	LinkedList<String> terms;
 	public Integral(){
+		terms = new LinkedList<String>();
 	}
 	public void eval(String str){
 		this.s=str;
@@ -20,5 +23,20 @@ public class Integral {
 			ret= "tan(x)";
 		}
 		return ret;
+	}
+	public void termsplit(String str){
+		int parenthesis=0;
+		String temp = "";
+		for(int i=0; i<str.length(); i++){
+			if (str.charAt(i)=='(') parenthesis++;
+			if (str.charAt(i)==')') parenthesis--;
+			if ( (str.charAt(i)=='+' || str.charAt(i) == '-') &
+					parenthesis==0)
+			{ 
+				terms.add(temp);
+				temp="";
+			}
+			temp+=str.charAt(i);
+		}
 	}
 }
