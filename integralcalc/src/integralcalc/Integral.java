@@ -70,11 +70,18 @@ public class Integral {
 	}
 	private String getBase(String data) {
 		// TODO Auto-generated method stub
-		return null;
+		return data.substring(getMult(data).length()-1) ;
 	}
 	private String getMult(String data) {
-		// TODO Auto-generated method stub
-		return null;
+		String s="";
+		int parenthesis=0;
+		for(int i=0;i<data.length(); i++){
+			if(data.charAt(i)=='(') parenthesis++;
+			if((parenthesis==0) && (data.charAt(i)=='(' || data.charAt(i)=='*')) break;
+			if(data.charAt(i)=='(') parenthesis--;
+			s+=data.charAt(i);
+		}
+		return s;
 	}
 	private boolean commonIntegral(String data) {
 		// TODO Auto-generated method stub
