@@ -13,6 +13,9 @@ public class Integral {
 	public void eval(String str){
 		this.s=str;
 		termsplit(s);
+		for(String val : terms){
+			System.out.println(getMult(val));
+		}
 	}
 	public String commonCheck(String str){
 		String ret="";
@@ -78,13 +81,18 @@ public class Integral {
 		int parenthesis=0;
 		for(int i=0;i<data.length(); i++){
 			if(data.charAt(i)=='(') parenthesis++;
-			if((parenthesis==0) && (data.charAt(i)=='(' || data.charAt(i)=='*')){
-				if(s=="-") s+="1";
-				break;
+			if((parenthesis==0) && (data.charAt(i)=='(' || data.charAt(i)=='*' 
+					|| Character.isLetter(data.charAt(i)))){
+				
+				i=data.length();
+			}else{
+				if(data.charAt(i)=='(') parenthesis--;
+				s+=data.charAt(i);
 			}
-			if(data.charAt(i)=='(') parenthesis--;
-			s+=data.charAt(i);
+			
 		}
+		if(s!="" && s.charAt(0)=='+') s=s.substring(1);
+		if(s=="-") s+="1";
 		return s;
 	}
 
