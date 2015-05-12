@@ -21,8 +21,8 @@ public class Integral {
 			ret= "-cos(x)";
 		}else if(str=="1/x"){
 			ret= "ln(x)";
-		}else if(str=="1/1+x"){
-			ret= "tan(x)";
+		}else if(str=="1/1+(x^2)"){
+			ret= "arctan(x)";
 		}
 		return ret;
 	}
