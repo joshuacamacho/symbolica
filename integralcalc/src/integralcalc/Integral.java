@@ -5,6 +5,7 @@ public class Integral {
 	String s;
 	String sIntegral;
 	LinkedList<String> terms;
+	Node head;
 	public Integral(){
 		terms = new LinkedList<String>();
 	}

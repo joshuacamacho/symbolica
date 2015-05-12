@@ -10,6 +10,7 @@ public class Main {
 		Integral i=new Integral();
 		i.eval("2/3cos(x)+(1/2)(x^2)+2sin(x)+cos(x)sin(x)+49(x+3)^2");
 		i.displayterms();
+		
 	}
 
 }
