@@ -1,6 +1,7 @@
 package integralcalc;
 import java.util.*;
 
+
 public class Integral {
 	String s;
 	String sIntegral;
@@ -86,6 +87,7 @@ public class Integral {
 		}
 		return s;
 	}
+
 	private boolean commonIntegral(String data) {
 		// TODO Auto-generated method stub
 		return false;
