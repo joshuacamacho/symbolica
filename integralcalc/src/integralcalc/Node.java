@@ -5,4 +5,8 @@ public class Node {
 	Node leftchild;
 	Node rightchild;
 	boolean finished=false;
+	
+	public Node(String s){
+		data=s;
+	}
 }

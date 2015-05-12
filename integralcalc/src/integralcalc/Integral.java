@@ -47,4 +47,37 @@ public class Integral {
 			System.out.println(s);
 		}
 	}
+	
+	public void addTraverse(Node n, String s){
+		n.data=s;
+		if(!n.finished && !commonIntegral(n.data)){
+			n.leftchild=new Node(getMult(n.data));
+			addTraverse(n.rightchild,(getBase(n.data)));	
+		}
+		if(commonIntegral(n.data) && !n.finished){
+			n.leftchild=null;
+			n.finished=true;
+			addTraverse(n.rightchild,getIntegral(n.data));
+		}
+		if(n.finished){
+			n.leftchild=new Node(getMult(n.data));
+			n.rightchild=new Node(getBase(n.data));
+		}
+	}
+	private String getIntegral(String data) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	private String getBase(String data) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	private String getMult(String data) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	private boolean commonIntegral(String data) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
