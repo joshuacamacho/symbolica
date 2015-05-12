@@ -77,7 +77,10 @@ public class Integral {
 		int parenthesis=0;
 		for(int i=0;i<data.length(); i++){
 			if(data.charAt(i)=='(') parenthesis++;
-			if((parenthesis==0) && (data.charAt(i)=='(' || data.charAt(i)=='*')) break;
+			if((parenthesis==0) && (data.charAt(i)=='(' || data.charAt(i)=='*')){
+				if(s=="-") s+="1";
+				break;
+			}
 			if(data.charAt(i)=='(') parenthesis--;
 			s+=data.charAt(i);
 		}
