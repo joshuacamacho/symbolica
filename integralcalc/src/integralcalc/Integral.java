@@ -15,19 +15,7 @@ public class Integral {
 		Node head=new Node();
 		System.out.println(recurse(head,s));
 	}
-	public String commonCheck(String str){
-		String ret="";
-		if(str=="cos(x)"){
-			ret= "sin(x)";
-		}else if(str=="sin(x)"){
-			ret= "-cos(x)";
-		}else if(str=="1/x"){
-			ret= "ln(x)";
-		}else if(str=="1/1+(x^2)"){
-			ret= "arctan(x)";
-		}
-		return ret;
-	}
+	
 	public void termsplit(String str){
 		int parenthesis=0;
 		String temp = "";
@@ -201,34 +189,5 @@ public class Integral {
 		return hasMultiplier;
 	}
 	
-	String recurse(Node n, String s){
-		n.data=s;
-		if(multipleTerms(s)){
-			String top=getTopTerm(s);
-			String bottom=getBottomTerm(s);
-			n.leftchild=new Node();
-			n.rightchild=new Node();
-			n.leftchild.data=recurse(n.leftchild,top);
-			n.rightchild.data=recurse(n.rightchild,bottom);
-			return n.leftchild.data + "+" + n.rightchild.data;
-		}
-		if(constantMultiplier(s)){
-			if(multipleTerms(base(s))){
-				String mult=extractMult(s);
-				String top=getTopTerm(s);
-				String bottom=getBottomTerm(s);
-				n.leftchild=new Node();
-				n.rightchild=new Node();
-				n.leftchild.data=recurse(n.leftchild,top);
-				n.rightchild.data=recurse(n.rightchild,bottom);
-				return mult+ "*" + n.leftchild.data + "+" + n.rightchild.data;
-			}else{
-				String mult=extractMult(s);
-				return mult+"*"+evaluateIntegral(s);
-			}
-		}
-		if(!multipleTerms(s)){
-			return evaluatedIntegral(s);
-		}
-	}
+	
 }
