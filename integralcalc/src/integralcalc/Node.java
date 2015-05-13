@@ -9,4 +9,7 @@ public class Node {
 	public Node(String s){
 		data=s;
 	}
+	public Node(){
+		
+	}
 }
