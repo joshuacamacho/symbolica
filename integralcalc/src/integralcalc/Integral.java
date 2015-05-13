@@ -200,4 +200,35 @@ public class Integral {
 		}
 		return hasMultiplier;
 	}
+	
+	String recurse(Node n, String s){
+		n.data=s;
+		if(multipleTerms(s)){
+			String top=getTopTerm(s);
+			String bottom=getBottomTerm(s);
+			n.leftchild=new Node();
+			n.rightchild=new Node();
+			n.leftchild.data=recurse(n.leftchild,top);
+			n.rightchild.data=recurse(n.rightchild,bottom);
+			return n.leftchild.data + "+" + n.rightchild.data;
+		}
+		if(constantMultiplier(s)){
+			if(multipleTerms(base(s))){
+				String mult=extractMult(s);
+				String top=getTopTerm(s);
+				String bottom=getBottomTerm(s);
+				n.leftchild=new Node();
+				n.rightchild=new Node();
+				n.leftchild.data=recurse(n.leftchild,top);
+				n.rightchild.data=recurse(n.rightchild,bottom);
+				return mult+ "*" + n.leftchild.data + "+" + n.rightchild.data;
+			}else{
+				String mult=extractMult(s);
+				return mult+"*"+evaluateIntegral(s);
+			}
+		}
+		if(!multipleTerms(s)){
+			return evaluatedIntegral(s);
+		}
+	}
 }
