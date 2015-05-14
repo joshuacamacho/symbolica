@@ -3,46 +3,19 @@ import java.util.*;
 
 
 public class Integral {
-	String s;
-	String sIntegral;
-	LinkedList<String> terms;
-	Node head;
-	public Integral(){
-		terms = new LinkedList<String>();
-	}
+	private String s;
+	private Node head;
+	
+	public Integral(){}
+	
 	public void eval(String str){
 		this.s=str;
 		Node head=new Node();
 		System.out.println(recurse(head,s));
 	}
 	
-	public void termsplit(String str){
-		int parenthesis=0;
-		String temp = "";
-		for(int i=0; i<str.length(); i++){
-			if (str.charAt(i)=='(') parenthesis++;
-			if (str.charAt(i)==')') parenthesis--;
-			if ( (str.charAt(i)=='+' || str.charAt(i) == '-') &&
-					parenthesis==0)
-			{ 
-				terms.add(temp);
-				temp="";
-			}
-			temp+=str.charAt(i);
-			if(i+1==str.length()) terms.add(temp);
-		}
-	}
-	public void displayterms(){
-		for(String s: terms){
-			System.out.println(s);
-		}
-	}
-	
-	
-	
 	private String getBase(String data) {
 		String s =data.substring(getMult(data).length()+1);
-		
 		if(s.charAt(0)=='(') s=s.substring(1);
 		int parenthesis=0;
 		for(int i=0; i<s.length();i++){
@@ -53,6 +26,7 @@ public class Integral {
 		
 		return s;
 	}
+	
 	private String getMult(String data) {
 		String s="";
 		int parenthesis=0;
@@ -65,8 +39,6 @@ public class Integral {
 		return s;
 	}
 
-	
-	
 	public String recurse(Node n, String s){
 		n.data=s;
 		if(multipleTerms(s)){
@@ -102,7 +74,6 @@ public class Integral {
 		}
 		return "Unable to evaluate";
 	}
-
 	
 	private String getBottomTerm(String s) {
 		int parenthesis=0;
@@ -115,8 +86,6 @@ public class Integral {
 				s=s.substring(i+1);
 				return s;
 			}
-			
-			
 		}
 		return s;
 	}
@@ -130,18 +99,18 @@ public class Integral {
 			if ( (s.charAt(i)=='+' || s.charAt(i) == '-') &&
 					parenthesis==0 && i!=0)
 			{ 
-				s=s.substring(i);
 				return temp;
 			}
 			temp+=s.charAt(i);
-			
 		}
 		return s;
 	}
+	
 	private boolean multipleTerms(String s) {
 		if(s==getTopTerm(s))return false;
 		return true;
 	}
+	
 	private boolean constantMultiplier(String s) {
 		boolean foundnum=false;
 		boolean hasMultiplier=false;

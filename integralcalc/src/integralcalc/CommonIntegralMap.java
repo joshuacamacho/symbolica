@@ -33,8 +33,6 @@ public class CommonIntegralMap {
 		return cont;
 	}
 	public String getIntegral(String s){
-		
-		String str = m.get(s);
-		return str;
+		return m.get(s);
 	}
 }
