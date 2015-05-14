@@ -41,8 +41,17 @@ public class Integral {
 	
 	
 	private String getBase(String data) {
-		// TODO Auto-generated method stub
-		return data.substring(getMult(data).length()+1) ;
+		String s =data.substring(getMult(data).length()+1);
+		
+		if(s.charAt(0)=='(') s=s.substring(1);
+		int parenthesis=0;
+		for(int i=0; i<s.length();i++){
+			if(s.charAt(i)=='(') parenthesis++;
+			if(s.charAt(i)==')') parenthesis--;
+			if(i==s.length()-1 && parenthesis!=0) s=s.substring(0,s.length()-1);
+		}
+		
+		return s;
 	}
 	private String getMult(String data) {
 		String s="";
@@ -79,7 +88,7 @@ public class Integral {
 				n.rightchild=new Node();
 				n.leftchild.data=recurse(n.leftchild,top);
 				n.rightchild.data=recurse(n.rightchild,bottom);
-				return mult+ "*" + n.leftchild.data + "+" + n.rightchild.data;
+				return mult+ "*(" + n.leftchild.data + "+" + n.rightchild.data+")";
 			}else{
 				String mult=getMult(s);
 				s=getBase(s);
