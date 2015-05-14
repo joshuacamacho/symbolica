@@ -95,7 +95,7 @@ public class Integral {
 	}
 
 	
-	private String getBottomTerm(String s2) {
+	private String getBottomTerm(String s) {
 		int parenthesis=0;
 		for(int i=0; i<s.length(); i++){
 			if (s.charAt(i)=='(') parenthesis++;
