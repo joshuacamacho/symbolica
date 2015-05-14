@@ -25,6 +25,7 @@ public class CommonIntegralMap {
 		m.put("sin^2(x)", "(1/2)*(x-sin(x)cos(x))");
 		m.put("cos^2(x)", "(1/2)*(x+sin(x)cos(x))");
 		m.put("sin(x)cos(x)","-1*(1/2)cos^2(x)");
+		m.put("cos(x)sin(x)","-1*(1/2)cos^2(x)");
 	}
 	public boolean contains(String s){
 		boolean cont=false;
