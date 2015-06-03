@@ -44,11 +44,12 @@ public class Integral {
 		if(multipleTerms(s)){
 			String top=getTopTerm(s);
 			String bottom=getBottomTerm(s);
+                        n.termConnect=getTermConnect(s);
 			n.leftchild=new Node();
 			n.rightchild=new Node();
 			n.leftchild.data=recurse(n.leftchild,top);
 			n.rightchild.data=recurse(n.rightchild,bottom);
-			return n.leftchild.data + "+" + n.rightchild.data;
+			return n.leftchild.data + n.termConnect + n.rightchild.data;
 		}
 		if(constantMultiplier(s)){
 			if(multipleTerms(getBase(s))){
@@ -56,11 +57,12 @@ public class Integral {
 				s=getBase(s);
 				String top=getTopTerm(s);
 				String bottom=getBottomTerm(s);
+                                n.termConnect=getTermConnect(s);
 				n.leftchild=new Node();
 				n.rightchild=new Node();
 				n.leftchild.data=recurse(n.leftchild,top);
 				n.rightchild.data=recurse(n.rightchild,bottom);
-				return mult+ "*(" + n.leftchild.data + "+" + n.rightchild.data+")";
+				return mult+ "*(" + n.leftchild.data + n.termConnect + n.rightchild.data+")";
 			}else{
 				String mult=getMult(s);
 				s=getBase(s);
@@ -125,6 +127,22 @@ public class Integral {
 		}
 		return hasMultiplier;
 	}
+
+    private String getTermConnect(String s) {
+        int parenthesis=0;
+        String connect="";
+		for(int i=0; i<s.length(); i++){
+			if (s.charAt(i)=='(') parenthesis++;
+			if (s.charAt(i)==')') parenthesis--;
+			if ( (s.charAt(i)=='+' || s.charAt(i) == '-') &&
+					parenthesis==0 && i!=0)
+			{ 
+				connect+=s.charAt(i);
+				return connect;
+			}
+		}
+                return "";
+    }
 	
 	
 }
