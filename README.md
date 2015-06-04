@@ -2,6 +2,7 @@
 
 ## Overview
 Symbolica is a collection of mathematical calculators
+
 Includes calculators for...
 * Derivatives
 * Integrals
