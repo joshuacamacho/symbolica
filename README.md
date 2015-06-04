@@ -6,5 +6,5 @@ Includes calculators for...
 * Matrices
 
 
-# Basic Examples
+## Basic Examples
 For further and more complex examples see the wiki
