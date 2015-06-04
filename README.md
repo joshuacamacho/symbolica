@@ -4,6 +4,5 @@ Includes calculators for...
 * Derivatives
 * Integrals
 * Matrices
-* 
 ### Basic Examples
 For further and more complex examples see the wiki
