@@ -4,6 +4,7 @@ package Calculus.Integral;
  */
 
 import java.util.HashMap;
+import Calculus.Differential.*;
 /**
  * Class containing a map of common integrals and the ability to pass
  * strings in order to check common integrals
@@ -19,8 +20,8 @@ public class CommonIntegralMap {
         m.put("e^x", "e^x");
         m.put("sec^2(x)", "tan(x)");
         m.put("csc^2(x)", "-cot(x)");
-        m.put("sec(x)tan(x)", "sec(x)");
-        m.put("csc(x)cot(x)", "-csc(x)");
+        m.put("sec(x)*tan(x)", "sec(x)");
+        m.put("csc(x)*cot(x)", "-csc(x)");
         m.put("sec(x)", "ln|sec(x)+tan(x)|");
         m.put("csc(x)", "ln|csc(x)-cot(x)|");
         m.put("tan(x)", "ln|sec(x)|");
@@ -30,11 +31,11 @@ public class CommonIntegralMap {
         m.put("1/x", "ln|x|");
         m.put("x^(2)", "(1/3)*x^(3)");
         m.put("x", "(1/2)*x^(2)");
-        m.put("1/(1+x^2)","arctan(x)");
+        m.put("1/(1+x^(2))","arctan(x)");
         m.put("sin^2(x)", "(1/2)*(x-sin(x)cos(x))");
         m.put("cos^2(x)", "(1/2)*(x+sin(x)cos(x))");
-        m.put("sin(x)cos(x)","-1*(1/2)cos^2(x)");
-        m.put("cos(x)sin(x)","-1*(1/2)cos^2(x)");
+        m.put("sin(x)*cos(x)","-1*(1/2)cos^2(x)");
+        m.put("cos(x)*sin(x)","-1*(1/2)cos^2(x)");
     }
     
     /**
@@ -85,6 +86,8 @@ public class CommonIntegralMap {
         if(checkPowerRule(s)) return evalPowerRule(s);
         
         if(isConstant(s))return constantRule(s);
+        
+        if(iscommonUsub(s)) return commonUsub(s);
         
         return "NOEVAL";
     }
@@ -262,5 +265,66 @@ public class CommonIntegralMap {
         return s+"*x";
     
     }
+
+    private boolean iscommonUsub(String s) {
+        String operand1="";
+        String outerFunction="";
+        String innerFunction="";
+        int parenthesis=0;
+        for(int i=0; i<s.length(); i++){
+            if(s.charAt(i)==')') parenthesis--;
+            if(parenthesis>0) innerFunction+=s.charAt(i);
+            if(s.charAt(i)=='(') parenthesis++;
+           
+            
+            if(s.charAt(i)=='*'&& parenthesis==0 && i!=s.length()-1){
+                outerFunction=s.substring(i+1);
+                break;
+            }
+            
+            
+            
+        }
+        System.out.println("Inner Function is "+innerFunction);
+        System.out.println("Outer Function is "+outerFunction);
+        Parse_Tree t=new Parse_Tree(innerFunction);
+        if(outerFunction.equals(t.f_prime.f_prime)) return true;
+        
+        return false;
+    }
+
+    private String commonUsub(String s) {
+        int parenthesis=0;
+        String operand1="";
+        String outerFunction="";
+        String innerFunction="";
+        int startInner=0;
+        for(int i=0; i<s.length(); i++){
+            if(s.charAt(i)==')') parenthesis--;
+            if(parenthesis>0) innerFunction+=s.charAt(i);
+            if(s.charAt(i)=='('){
+                parenthesis++;
+                if(startInner==0)startInner=i;
+            }
+           
+            
+            if(s.charAt(i)=='*'&& parenthesis==0 && i!=s.length()-1){
+                outerFunction=s.substring(i+1);
+                break;
+            }
+        }
+        s=s.substring(0,startInner+1)+"x)";
+        System.out.println("S= "+s);
+        s=m.get(s);
+        startInner=0;
+        for(int i=0; i<s.length(); i++){
+            if(s.charAt(i)=='(') {
+                s=s.substring(0,i+1);
+                break;
+            }
+        }    
+        return s + innerFunction+")";    
+        }
+    
 
 }
