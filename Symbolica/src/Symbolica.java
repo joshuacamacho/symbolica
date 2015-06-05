@@ -74,7 +74,6 @@ public class Symbolica {
     }
     
     public static void integral(){
-        
         Scanner in_scan = new Scanner(System.in);
         String choice;
         Integral test = new Integral();
