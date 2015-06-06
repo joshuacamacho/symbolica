@@ -4,14 +4,21 @@ import java.util.*;
 
 public class Integral {
 	private String s;
+        private String antiderivative;
 	private Node head;
 	
 	public Integral(){}
 	
+        public String get_antiderivative(){
+            
+            return antiderivative;
+            
+        }
+        
 	public void eval(String str){
 		this.s=str;
 		Node head=new Node();
-		System.out.println(recurse(head,s));
+		antiderivative = recurse(head,s);
 	}
 	
 	private String getBase(String data) {
