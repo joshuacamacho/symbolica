@@ -60,6 +60,11 @@ public class Terminal_UI extends javax.swing.JFrame {
         jTextArea1.setForeground(new java.awt.Color(255, 255, 255));
         jTextArea1.setRows(5);
         jTextArea1.setText("-------------------------Symbolica Terminal------------------------\n~~> ");
+        jTextArea1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextArea1MouseClicked(evt);
+            }
+        });
         jTextArea1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jTextArea1KeyReleased(evt);
@@ -88,11 +93,64 @@ public class Terminal_UI extends javax.swing.JFrame {
             text = jTextArea1.getText();
             text = text.substring(state.get_cursor_position(), text.length()-1);
             change_screen(text);
+            terminal.history.add(text);
             jTextArea1.setText(jTextArea1.getText() + "~~> ");
             state.set_cursor_position(state.get_cursor_position() + text.length() + 5);
+            terminal.set_history_index(0);
+            
         }
+        if(key == KeyEvent.VK_UP){
+            String modify = terminal.get_history_item(terminal.get_history_index());
+            if(!modify.equals("$")){
+                int index = jTextArea1.getText().length()-1;
+                while(jTextArea1.getText().charAt(index) != '>'){
+                    index--;
+                }
+                String reset = jTextArea1.getText().substring(0,index+2);
+                jTextArea1.setText(reset);
+                jTextArea1.setText(jTextArea1.getText() + modify);
+                terminal.set_history_index(terminal.get_history_index() + 1);
+            }
+            else{
+                jTextArea1.setText(jTextArea1.getText());
+            }
+            
+        }
+        if(key == KeyEvent.VK_DOWN){
+            
+            if(terminal.get_history_index() != 1 && terminal.get_history_index() != 0 && !terminal.history.isEmpty()){
+                int index = jTextArea1.getText().length()-1;
+                while(jTextArea1.getText().charAt(index) != '>'){
+                    index--;
+                }
+                jTextArea1.setText(jTextArea1.getText().substring(0,index+2));
+                terminal.set_history_index(terminal.get_history_index() - 1);
+                jTextArea1.setText(jTextArea1.getText() + 
+                           terminal.get_history_item(terminal.get_history_index()-1));
+            }
+            else{
+                jTextArea1.setText(jTextArea1.getText());
+            }
+                        
+        }
+        if(key == KeyEvent.VK_LEFT){
+            if(jTextArea1.getText().charAt(jTextArea1.getCaretPosition()-1) == '>'){
+                jTextArea1.setText(jTextArea1.getText());
+            }   
+        }
+        if(key == KeyEvent.VK_BACK_SPACE){
+            if(jTextArea1.getText().charAt(jTextArea1.getCaretPosition()-1) == '>'){
+                jTextArea1.setText(jTextArea1.getText() + " ");
+            } 
+        }
+        
     }//GEN-LAST:event_jTextArea1KeyReleased
 
+    private void jTextArea1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextArea1MouseClicked
+        jTextArea1.setText(jTextArea1.getText());
+    }//GEN-LAST:event_jTextArea1MouseClicked
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -131,9 +189,13 @@ public class Terminal_UI extends javax.swing.JFrame {
     public void change_screen(String text){
         
         String change = terminal.input(text);
-        if(change != null){
+        if(change != null && !change.equals("clear")){
             jTextArea1.setText(jTextArea1.getText() + change  + "\n");
             state.set_cursor_position(state.get_cursor_position() + change.length()+1);
+        }
+        if(change != null && change.equals("clear")){
+            jTextArea1.setText("-------------------------Symbolica Terminal------------------------\n");
+            state.set_cursor_position(62);
         }
         if(terminal.end_session()){
             System.exit(0);

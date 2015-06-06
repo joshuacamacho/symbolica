@@ -13,6 +13,7 @@ import Calculus.Differential.*;
 import Calculus.Integral.*;
 
 import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  *
@@ -20,13 +21,16 @@ import java.util.HashMap;
  */
 public class Terminal {
     
-    boolean alive;
+    private boolean alive;
     HashMap<String,String> functions;
+    ArrayList<String> history;
+    private int history_index;
     
     public Terminal(){
         
-        print();
         functions = new HashMap();
+        history = new ArrayList();
+        history_index = 0;
         alive = true;
         
     }
@@ -40,6 +44,29 @@ public class Terminal {
     public boolean get_alive(){
         
         return alive;
+        
+    }
+    
+    public void set_history_index(int history_index){
+        
+        this.history_index = history_index;
+        
+    }
+    
+    public int get_history_index(){
+        
+        return history_index;
+        
+    }
+    
+    public String get_history_item(int offset){
+        
+        if(history.size()-1 - offset >=0 && !history.isEmpty()){
+            return history.get((history.size()-1) - offset);
+        }
+        else{
+                return "$";
+        }
         
     }
     
@@ -63,12 +90,14 @@ public class Terminal {
                 return ("    " + functions.toString());
              
             case "clear":
-                clear();
-                break;
+                return clear();
                 
             case "exit":
                  set_alive(false);
                  break;
+                
+            default:
+                return "    Invalid command";
 
         }
         
@@ -180,11 +209,9 @@ public class Terminal {
         
     }
     
-    public void clear(){
+    public String clear(){
         
-        System.out.println("\n \n \n \n \n \n \n \n \n \n \n \n \n");
-        print();
-        System.out.println("\n \n \n \n \n \n \n \n \n \n \n \n \n");
+        return "clear";
         
     }
     
