@@ -8,14 +8,6 @@ package Terminal;
 
 import java.awt.Color.*;
 import java.awt.event.*;
-import java.awt.event.FocusListener;
-import java.awt.event.FocusEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JLabel;
-import javax.swing.text.BadLocationException;
-
-import Terminal.*;
 
 /**
  *

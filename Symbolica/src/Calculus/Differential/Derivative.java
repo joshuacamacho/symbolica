@@ -46,6 +46,8 @@ public class Derivative {
         elementaries.add("arcsin");
         elementaries.add("arccos");
         elementaries.add("arctan");
+        elementaries.add("sinh");
+        elementaries.add("cosh");
         elementaries.add("ln");
         elementaries.add("log");
         elementaries.add("^");
@@ -131,11 +133,19 @@ public class Derivative {
      * @param exponent The exponent n
      * @return         A String containing n(x)^(n-1)
      */
-    public String power(String base,String exponent){
+    public String power(String exponent,String base){
         
-        return exponent + base + "^(" + Integer.toString(Integer.parseInt
-               (exponent)-1) + ")";
+        System.out.println(base + " * " + exponent);
         
+        int new_exponent = Integer.parseInt(exponent);
+        if(base.equals("x")){
+            return new_exponent + base + "^(" + (new_exponent-1) + ")";
+        }
+        else{
+            Parse_Tree chain = new Parse_Tree(base);
+            return new_exponent + base + "^(" + (new_exponent-1) + ")" + chain.f_prime.f_prime;
+        }
+            
     }
     
     /**
@@ -376,6 +386,46 @@ public class Derivative {
         }
         
     }
+    
+    /**
+     * Calculates the derivative of the sinh(x) function
+     * @param x The parameter of the function sinh(x)
+     * @return The string cosh(x)
+     */
+    public String sinh(String x){
+       
+        // If the function is elementary, return the known derivative
+        if(x.equals("x")){
+            return "cosh(" + x + ")";
+        }
+        
+        // Else, apply the chain rule
+        else{
+            Parse_Tree chain = new Parse_Tree(x);
+            return "cosh(" + x + ")" + chain.f_prime.f_prime;
+        }
+        
+    }
+    
+    /**
+     * Calculate the derivative of the cosh(x) function
+     * @param x The parameter x of cosh(x)
+     * @return  The string sinh(x)
+     */
+    public String cosh(String x){
+        
+        // If the function is elementary, return the known derivative
+        if(x.equals("x")){
+            return "sinh(" + x + ")";
+        }
+        
+        // Else, apply the chain rule
+        else{
+            Parse_Tree chain = new Parse_Tree(x);
+            return "sinh(" + x + ")" + chain.f_prime.f_prime;
+        }
+    }
+    
     
     /**
      * Calculates the derivative of a sum

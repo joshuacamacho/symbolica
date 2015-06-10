@@ -40,7 +40,9 @@ public class Parse_Tree extends Binary_Tree<Token>{
         elementarie.add("arctan");
         elementarie.add("ln");
         elementarie.add("log");
-        elementarie.add("^");
+        elementarie.add("x^n");
+        elementarie.add("a^x");
+        elementarie.add("e^x");
         
         return elementarie;
         
@@ -70,6 +72,11 @@ public class Parse_Tree extends Binary_Tree<Token>{
         }
         
         // Base Case 2: f is a known function
+        else if(this_node.get_operator().equals("x^n")){
+            this.set_tree(new Token(f),null,null);
+            f_prime.f_prime = f_prime.derive(this_node.get_operator(),this_node.get_operand_2(),
+                          this_node.get_operand_1());    
+        }
         else if(this_node.get_operand_1() == null &&
             elementaries.contains(this_node.get_operator())){
             this.set_tree(new Token(f),null,null);
@@ -150,7 +157,7 @@ public class Parse_Tree extends Binary_Tree<Token>{
         
         String cleaned_string = f;
         
-        if(f != null){
+        if(f != null && !f.contains("^") && !f.equals("")){
             HashMap<Integer,Integer> parentheses = get_parentheses(f);
             while(cleaned_string.charAt(0) == '(' && parentheses.size() > 0 &&
               cleaned_string.charAt(cleaned_string.length()-1) == ')'){
@@ -274,7 +281,8 @@ public class Parse_Tree extends Binary_Tree<Token>{
         Token parsed_string = new Token();
         HashMap<Integer,Integer> parentheses = get_parentheses(f);
         
-        if(f.contains("+") || f.contains("-")|| f.contains("/")){
+        
+        if(f != null && (f.contains("+") || f.contains("-")|| f.contains("/"))){
             for(int i=0;i<f.length();i++){
                 boolean check = true;
                 for(Map.Entry<Integer,Integer> entry : parentheses.entrySet()){
@@ -305,9 +313,9 @@ public class Parse_Tree extends Binary_Tree<Token>{
 
             }    
         }
-        if(f.length()>1){
-            if(Character.isDigit(f.charAt(0))&&f.charAt(1)!='^' ||
-               (f.charAt(0) == 'x' && f.charAt(1) == '^')){
+        if(f != null && f.length()>1){
+            if(Character.isDigit(f.charAt(0))&&f.charAt(1)!='^' /*||*/
+               /*(f.charAt(0) == 'x' && f.charAt(1) == '^')*/){
                 int i = 0;
                 while(Character.isDigit(f.charAt(i))){
                     i++;
@@ -319,16 +327,19 @@ public class Parse_Tree extends Binary_Tree<Token>{
                 return parsed_string;
             }
         }
-          
-        for(int i=0;i<f.length()-1;i++){
+        
+        if(f != null){
+            for(int i=0;i<f.length()-1;i++){
             if(f.charAt(i)==')' && f.charAt(i+1)=='(' ||
-               f.charAt(i) == ')' && f.charAt(i+1) != ')'){
+               f.charAt(i) == ')' && (f.charAt(i+1) != ')' && f.charAt(i+1) != '^')){
                 parsed_string.set_operand_1(f.substring(0,i+1));
                 parsed_string.set_operand_2(f.substring(i+1,f.length()));
                 parsed_string.set_operator("*");
                 return parsed_string;    
             }
+            }
         }
+        
         
         return null;
         
@@ -344,25 +355,27 @@ public class Parse_Tree extends Binary_Tree<Token>{
      */
     public Token single_operand(String f){
        
-        // Create new Token object to potentially be passed back
-        Token parsed_string = new Token();  
-        
-        // Assume the function is a constant, If a non-digit is found then we
-        // can conclude our supposition was false, and the function is not const
-        boolean is_constant = true;
-        for(int i=0;i<f.length();i++){
-            if(!Character.isDigit(f.charAt(i))){
-                is_constant = false;
+        if(f != null){
+            // Create new Token object to potentially be passed back
+            Token parsed_string = new Token();  
+
+            // Assume the function is a constant, If a non-digit is found then we
+            // can conclude our supposition was false, and the function is not const
+            boolean is_constant = true;
+            for(int i=0;i<f.length();i++){
+                if(!Character.isDigit(f.charAt(i))){
+                    is_constant = false;
+                }
             }
-        }
-        
-        // If the function is constant or a single variable, set the Token
-        // object's data members to the proper values and return it
-        if(is_constant || f.equals("x")){
-            parsed_string.set_operand_1(null);
-            parsed_string.set_operand_2(f);
-            parsed_string.set_operator(null);
-            return parsed_string;
+
+            // If the function is constant or a single variable, set the Token
+            // object's data members to the proper values and return it
+            if(is_constant || f.equals("x")){
+                parsed_string.set_operand_1(null);
+                parsed_string.set_operand_2(f);
+                parsed_string.set_operator(null);
+                return parsed_string;
+            }
         }  
     
         // If function is not constant nor is it a single variable, return null
@@ -384,25 +397,80 @@ public class Parse_Tree extends Binary_Tree<Token>{
         Token parsed_string = new Token();
         String sub_function = "";
         
-        // Run through the string while creating substrings and checking them
-        // against the HashSet of elementary functions
-        for(int i=0;i<f.length();i++){
-            sub_function += f.charAt(i); // Concatinate character to substring
-            
-            if(elementaries.contains(sub_function)){ // Check substring against
-                parsed_string.set_operand_1(null);   // the hash table
-                int j = i+2;
-                
-                while(f.charAt(j) != ')'){
-                    j++;
+        if(f != null){
+            // Run through the string while creating substrings and checking them
+            // against the HashSet of elementary functions
+            for(int i=0;i<f.length();i++){
+                sub_function += f.charAt(i); // Concatinate character to substring
+
+                if(elementaries.contains(sub_function)){ // Check substring against
+                    parsed_string.set_operand_1(null);   // the hash table
+                    int j = i+2;
+
+                    while(f.charAt(j) != ')'){
+                        j++;
+                    }
+
+                    parsed_string.set_operand_2(f); // If found set the data members
+                    parsed_string.set_operator(sub_function); // of the Token object
+                    return parsed_string;                     // and return it.
                 }
-                
-                parsed_string.set_operand_2(f); // If found set the data members
-                parsed_string.set_operator(sub_function); // of the Token object
-                return parsed_string;                     // and return it.
+                if(sub_function.charAt(i) == '^'){
+                    String left = "";
+                    int end = i-1;
+                    int start = i-1;
+                    int j = 0;
+                    if(start >= 0 && sub_function.charAt(start)==')'){
+                        start--;
+                        int count = 1;
+                        while(count > 0){
+                            if(sub_function.charAt(start) == ')'){
+                                count++;
+                            }
+                            if(sub_function.charAt(start) == '('){
+                                count--;
+                            }
+                            start--;
+                        }
+                        //while(sub_function.charAt(start) != '('){
+                         //   start--;
+                        //}
+                        left = sub_function.substring(start+2, end);
+                        j = i + 1;
+                    }
+                    else{
+                        start = i;
+                        end = i;
+                        while(start > 0 && Character.isLetter(sub_function.charAt(start))){
+                            start--;
+                        }
+                        left = sub_function.substring(start,end);
+                        j = i + 1;
+                    }
+                    
+                    while(f.charAt(j) != ')'){
+                        sub_function += f.charAt(j);
+                        j++;
+                    }
+                    sub_function += f.charAt(j);
+                    
+                    String right = "";
+                    start = i + 2;
+                    end = i + 2;
+                    while(sub_function.charAt(end) != ')'){
+                        end++;
+                    }
+                    right = sub_function.substring(start,end);
+                    parsed_string.set_operand_1(left);
+                    parsed_string.set_operand_2(right);
+                    parsed_string.set_operator("x^n");
+                    return parsed_string;
+                }
+
+
             }
-            
         }
+        
             
         // If the function is not a known base function return null
         return null;
