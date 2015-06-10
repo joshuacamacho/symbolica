@@ -1,6 +1,8 @@
 # *_Symbolica_*
 
 ## Overview
+For a more detailed description of Symbolica, see the [Wiki](https://github.com/joshuacamacho/symbolica/wiki)
+
 Symbolica is a collection of mathematical calculators
 
 Includes calculators for...
