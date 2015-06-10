@@ -9,4 +9,4 @@ Includes calculators for...
 * Matrices
 
 ## Basic Examples
-For further and more complex examples see the wiki
+For further and more complex examples see the [Wiki](https://github.com/joshuacamacho/symbolica/wiki)
