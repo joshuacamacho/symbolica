@@ -14,7 +14,7 @@ public class Integral {
 	
         public String get_antiderivative(){
             
-            return antiderivative;
+            return antiderivative + " + C";
             
         }
         /**
