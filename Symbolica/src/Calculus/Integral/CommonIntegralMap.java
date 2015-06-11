@@ -17,7 +17,7 @@ public class CommonIntegralMap {
     CommonIntegralMap(){
         m.put("cos(x)", "sin(x)");
         m.put("sin(x)", "-cos(x)");
-        m.put("e^x", "e^x");
+        m.put("e^(x)", "e^(x)");
         m.put("sec^2(x)", "tan(x)");
         m.put("csc^2(x)", "-cot(x)");
         m.put("sec(x)*tan(x)", "sec(x)");
