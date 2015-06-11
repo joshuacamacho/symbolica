@@ -1,6 +1,9 @@
 package Calculus.Integral;
 import java.util.*;
-
+/**
+ * Class for evaluating integrals
+ * @author Joshua Camacho
+ */
 
 public class Integral {
 	private String s;
@@ -14,13 +17,23 @@ public class Integral {
             return antiderivative;
             
         }
-        
+        /**
+         * Function to evaluate integral. Starts the recursive method
+         * for solving the integral
+         * @param str A string containing the function to be evaluated
+         */
 	public void eval(String str){
 		this.s=str;
 		Node head=new Node();
 		antiderivative = recurse(head,s);
 	}
 	
+        /**
+         * Function to return the base of the function if it's a function
+         * with a constant multiplier
+         * @param data
+         * @return 
+         */
 	private String getBase(String data) {
 		String s =data.substring(getMult(data).length()+1);
 		if(s.charAt(0)=='(') s=s.substring(1);
