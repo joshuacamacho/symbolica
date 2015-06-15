@@ -1,5 +1,3 @@
-package Linear_Algebra;
-
 /*
  * Name: Alec Farfan
  * Date: 03/20/15
@@ -17,55 +15,150 @@ package Linear_Algebra;
  *              - LU Factorization
  */
 
+package Linear_Algebra;
 
 // Import libraries
 import java.util.ArrayList;
 
 public class Matrix{
     
-    private float array[][];
-    private int rows;
-    private int collumns;
-
+    // Data fields
+    private float array[][]; // 2D array representing a matrix
+    private int rows;        // m rows of the matrix
+    private int collumns;    // n columns of the matrix
     
+    /**
+     * Default constructor for Matrix class
+     * Initializes array to null and the rows and collumns to 0
+     */
     public Matrix(){
         
-    }
-    public Matrix(int row,int collumn){
-        array = new float[row][collumn];
-        this.rows = row;
-        this.collumns = collumn;
+        array = null;
+        rows = collumns = 0;
         
     }
-    public void set_dimensions(int row, int collumn){
-        array = new float[row][collumn];
-        
-    }
-    public void set_element(float value,int row,int collumn){
-        array[row][collumn] = value;
-        
-    }
-    public void set_rows(int row){
-        this.rows = row;
-        
-    }
-    public void set_collumns(int collumn){
-        this.collumns = collumn;
-        
-    }
-    public float get_element(int row,int collumn){ 
-        return array[row][collumn];
     
+    /**
+     * Constructor for Matrix class. Declares an m x n matrix where m is the 
+     * number of rows and n is the number of columns. Also sets the fields rows
+     * and columns to the values passed in through the parameters 
+     * @param row      // The number of rows in the matrix
+     * @param collumn  // The number of columns in the matrix
+     */
+    public Matrix(int row,int collumn){
+        
+        array = new float[row][collumn];
+        this.rows = row;
+        this.collumns = collumn;
+        
     }
+    
+    /**
+     * Setter method for the array field. Sets the array of the calling object
+     * to the value passed into the array parameter
+     * @param array The array to be assigned to the calling objects array field
+     */
+    public void set_array(float [][]array){
+        
+        this.array = array;
+        
+    }
+    
+    /**
+     * Getter method for the array field.
+     * @return The calling object's array field
+     */
+    public float[][] get_array(){
+        
+        return array;
+        
+    }
+    
+    /**
+     * Setter method for the rows field. Sets the calling object's rows field to
+     * the value passed into the row parameter
+     * @param rows The value to be assigned to the calling object's rows field
+     */
+    public void set_rows(int rows){
+    
+        this.rows = rows;
+        
+    }
+    
+    /**
+     * Getter method for the rows field
+     * @return The calling object's rows field
+     */
     public int get_rows(){ 
+    
         return rows;
     
     }
+    
+    /**
+     * Setter method for the columns field. Sets the calling object's columns
+     * field to the value passed into the collumn parameter
+     * @param collumn The value to be assigned to the calling object's column 
+     *                field
+     */
+    public void set_collumns(int collumn){
+        
+        this.collumns = collumn;
+        
+    }
+    
+    /**
+     * Getter method for the column field.
+     * @return The calling object's column field
+     */
     public int get_collumns(){ 
+    
         return collumns;
     
     }
+    
+    /**
+     * Method to initialize the array field of an object created with the
+     * default constructor
+     * @param row      // The number of rows in the new 2D array
+     * @param collumn  // The number of columns in the new 2D array
+     */
+    public void set_dimensions(int row, int collumn){
+    
+        array = new float[row][collumn];
+        
+    }
+    
+    /**
+     * Method to change the value of one of a matrices entries. 
+     * @param value   // Value to replace a matrices entry with
+     * @param row     // The row index i of the matrix
+     * @param collumn // The column index j of the matrix
+     */
+    public void set_element(float value,int row,int collumn){
+    
+        array[row][collumn] = value;
+        
+    }
+    
+    /**
+     * Method to retrieve the value of one of a matrices entries.
+     * @param row     // The row index i of the matrix
+     * @param collumn // The column index j of the matrix
+     * @return        // The value of a matrixes entry at the position
+     */
+    public float get_element(int row,int collumn){ 
+   
+        return array[row][collumn];
+    
+    }
+    
+    /**
+     * Method for printing out all of the entries of a matrix. Prints each row
+     * on its own line.
+     */
     public void print(){
+    
         for(int i=0;i<rows;i++){
             for(int j=0;j<collumns;j++){
                 System.out.print(array[i][j] + " ");
@@ -75,63 +168,85 @@ public class Matrix{
         System.out.print("\n");
         
     }
-    public String println(){
-        String output = "<html>";
-        for(int i=0;i<rows;i++){
-            for(int j=0;j<collumns;j++){
-                output += array[i][j] + " ";
-            }
-            output += "<br>";
-        }
-        output += "</html>";
+    
+    /**
+     * Method for adding two matrices (matrix addition).
+     * @param a The first matrix
+     * @param b The second matrix
+     * @return  The result of a + b
+     */
+    public Matrix matrix_addition(Matrix a, Matrix b){
         
-        return output;
-    }
-    public Matrix matrix_addition(Matrix a,Matrix b){
-        
+        // Declare Matrix to hold the result c = a + b
         Matrix result = new Matrix();
         
-        if((a.get_rows()==b.get_rows())&&a.get_collumns()==b.get_collumns()){
+        // Verify that a and b are of the same dimension
+        if((a.get_rows() == b.get_rows())&&a.get_collumns() == b.get_collumns()){
+            // Set the dimensions of the resultant matrix
             result.set_dimensions(rows, collumns);
             result.set_rows(rows);
             result.set_collumns(collumns);
             
+            // Sum all of the components of a and b and store the results in c
             for(int i=0;i<rows;i++){
                 for(int j=0;j<collumns;j++){
                     result.set_element(a.get_element(i,j) + b.get_element(i,j), i, j);
                 }
             }
-            
         }
+        
         return result;
        
     }
+    
+    /**
+     * Method for subtracting a matrix from another (matrix subtraction)
+     * @param a The first matrix
+     * @param b The second matrix
+     * @return  The result of a - b
+     */
     public Matrix matrix_subtraction(Matrix a,Matrix b){
         
+        // Declare Matrix to hold the result c = a - b
         Matrix result = new Matrix();
         
+        // Verify that a and b are of the same dimension
         if((a.get_rows()==b.get_rows())&&a.get_collumns()==b.get_collumns()){
+            // Set the dimensions of the resultant matrix
             result.set_dimensions(rows, collumns);
             result.set_rows(rows);
             result.set_collumns(collumns);
             
+            // Sum all of the components of a and b and store the results in c
             for(int i=0;i<rows;i++){
                 for(int j=0;j<collumns;j++){
                     result.set_element(a.get_element(i,j) - b.get_element(i,j),i,j);
                 }
             }
-            
         }
+        
         return result;
        
     }
+    
+    /**
+     * Method for multiplying two matrices (Matrix Multiplication)
+     * @param a The first matrix a
+     * @param b The second matrix b
+     * @return  The result c = ab
+     */
     public Matrix matrix_multiplication(Matrix a,Matrix b){
+    
         Matrix result = new Matrix();
+        
+        // Verify that m x n = n x k
         if(a.get_collumns()==b.get_rows()){
+            // Set the dimensions of the resultant matrix as m x k
             result.set_dimensions(a.get_rows(),b.get_collumns());
             result.set_rows(a.get_rows());
             result.set_collumns(b.get_collumns());
             
+            // Multiply the matrices and store the result in c
             int k = 0;
             for(int i=0;i<a.get_rows();i++){
                 for(int j=0;j<b.get_collumns();j++){
@@ -151,27 +266,52 @@ public class Matrix{
         return result;
         
     }
-    public Matrix scalar_multiplication(Matrix a,float scalar){
-        Matrix result = a;
+    
+    /**
+     * Method for multiplying a matrix by a real number (Scalar Multiplication)
+     * @param a       // The matrix to be scaled
+     * @param c       // The number to scale the matrix by
+     * @return        // The result b = ca
+     */
+    public Matrix scalar_multiplication(Matrix a, float c){
+        
+        // Initialize the resultant matrix to a
+        Matrix result = a;     
+        
+        // Increase each entry of the matrix by a-times
         for(int i=0;i<rows;i++){
             for(int j=0;j<collumns;j++){
-                result.set_element(scalar*result.get_element(i,j),i,j);
+                result.set_element(c*result.get_element(i,j),i,j);
             }
         }
         
         return result;
+    
     }
+    
+    /**
+     * Method for transposing a matrix (Matrix Transpose)
+     * @param a The matrix to be transposed
+     * @return The transpose a^t
+     */
     public Matrix matrix_transpose(Matrix a){
+       
+        // Initialize the resultant matrix with opposite row and column values
         Matrix result = new Matrix(a.get_collumns(),a.get_rows());
+        
+        // Switch the columns with the rows
         for(int i=0;i<result.get_rows();i++){
             for(int j=0;j<result.get_collumns();j++){
                 result.set_element(a.get_element(j,i),i,j);
             }
         }
+        
         return result;
         
     }
+    
     public Matrix row_echelon_form(Matrix a){
+    
         Matrix result = a;
         
         for(int i=0;i<rows;i++){
@@ -215,7 +355,9 @@ public class Matrix{
         return result;
         
     }
+    
     public Matrix reduced_row_echelon_form(Matrix a){
+    
         Matrix result = a.row_echelon_form(a);
         
         for(int i=result.get_rows()-1;i>=0;i--){
@@ -229,6 +371,7 @@ public class Matrix{
         return result;
         
     }
+    
     public Matrix interchange_rows(Matrix a,int row1,int row2){
         
         Matrix result = a;
@@ -248,7 +391,9 @@ public class Matrix{
         return result;
         
     }
+    
     public Matrix reduce_pivot(Matrix a,int row,float scalar){
+    
         Matrix result = a;
         for(int i=0;i<result.get_collumns();i++){
             result.set_element(result.get_element(row,i)/scalar, row,i);
@@ -256,7 +401,9 @@ public class Matrix{
         return result;
         
     }
+    
     public float[] scale_row(Matrix a,int row_num, int size,float scalar){
+  
         float new_row[] = new float[size];
         
         for(int i=0;i<size;i++){
@@ -265,7 +412,9 @@ public class Matrix{
         return new_row;
         
     }
+    
     public Matrix add_row(Matrix a,int row_num,float[] row){
+    
         Matrix result = a;
         for(int i=0;i<result.get_collumns();i++){
             result.set_element(result.get_element(row_num,i)+row[i],row_num,i);
@@ -273,7 +422,9 @@ public class Matrix{
         return result;
         
     }
+    
     public Matrix clear_negative_zeros(Matrix a){
+    
         Matrix result = a;
         for(int i=0;i<rows;i++){
             for(int j=0;j<collumns;j++){
@@ -285,7 +436,9 @@ public class Matrix{
         
         return result;
     }
+    
     public Matrix matrix_inverse(Matrix a){
+    
         Matrix merge = new Matrix(a.get_rows(),a.get_collumns()*2);
         for(int i=0;i<a.get_rows();i++){
             for(int j=0;j<a.get_collumns();j++){
@@ -314,7 +467,9 @@ public class Matrix{
         return result;
         
     }
+    
     public ArrayList<Matrix> lu_decompisition(Matrix a){
+    
         ArrayList<Matrix> lu = new ArrayList();
         ArrayList<Matrix> elementaries = new ArrayList();
         
@@ -376,7 +531,9 @@ public class Matrix{
         return lu;
         
     }
+    
     public Matrix identity_matrix(Matrix a){
+    
         Matrix result = new Matrix(a.get_rows(),a.get_collumns());    
         
         result.set_element(1,0,0);
@@ -399,7 +556,9 @@ public class Matrix{
         return result;
         
     }
+    
     public float determinant(Matrix a){
+    
         if(a.get_rows()==2){
             return (a.get_element(0,0)*a.get_element(1,1)-a.get_element(0,1)*a.get_element(1,1));
         }
@@ -413,7 +572,9 @@ public class Matrix{
         
         return 0;
     }
+    
     public float[] find_best(Matrix a){
+    
         float best[] = new float[a.get_rows()+2];
         int max = 0, place = 0, position = 0;
         
@@ -463,7 +624,9 @@ public class Matrix{
         return best;
         
     }
+    
     public Matrix reduce_determinant(Matrix a,float place,float position,int index){
+    
         Matrix result = new Matrix(a.get_rows()-1,a.get_rows()-1);
         
         if(position==0){
