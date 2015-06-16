@@ -1,7 +1,7 @@
 /*
  * Name: Alec Farfan
  * Date: 06/10/15
- * Purpose: Terminal class used to control the Terminal_UI
+ * Purpose: Terminal_State class used to control the Terminal_UI
  */
 
 package Terminal;
