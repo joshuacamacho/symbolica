@@ -1,13 +1,17 @@
-package Terminal;
-
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Name: Alec Farfan
+ * Date: 06/10/15
+ * Purpose: Terminal_UI class used to serve as the user interface
  */
 
+package Terminal;
+
+// Import libraries
 import java.awt.Color.*;
 import java.awt.event.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 
 /**
  *
@@ -85,7 +89,7 @@ public class Terminal_UI extends javax.swing.JFrame {
             text = jTextArea1.getText();
             text = text.substring(state.get_cursor_position(), text.length()-1);
             change_screen(text);
-            terminal.history.add(text);
+            terminal.get_history().add(text);
             jTextArea1.setText(jTextArea1.getText() + "~~> ");
             state.set_cursor_position(state.get_cursor_position() + text.length() + 5);
             terminal.set_history_index(0);
@@ -110,7 +114,7 @@ public class Terminal_UI extends javax.swing.JFrame {
         }
         if(key == KeyEvent.VK_DOWN){
             
-            if(terminal.get_history_index() != 1 && terminal.get_history_index() != 0 && !terminal.history.isEmpty()){
+            if(terminal.get_history_index() != 1 && terminal.get_history_index() != 0 && !terminal.get_history().isEmpty()){
                 int index = jTextArea1.getText().length()-1;
                 while(jTextArea1.getText().charAt(index) != '>'){
                     index--;
@@ -130,9 +134,41 @@ public class Terminal_UI extends javax.swing.JFrame {
                 jTextArea1.setText(jTextArea1.getText());
             }   
         }
+        if(key == KeyEvent.VK_RIGHT){
+            String search = jTextArea1.getText();
+            int index = search.length()- 1;
+            while(search.charAt(index) != '>'){
+                index--;
+            }
+            search = search.substring(index + 2, search.length());
+            LinkedList<String> matches = new LinkedList();
+            for(String h : terminal.get_commands()){
+                boolean match_command = true;
+                for(int i = 0; i < search.length() && i < h.length(); i++){
+                    if(h.charAt(i) != search.charAt(i)){
+                        match_command = false;
+                        break;
+                    }
+                }
+                if(match_command)
+                    matches.add(h);
+            }
+            if(matches.size() == 1)
+                jTextArea1.setText(jTextArea1.getText().substring(0,index+2)
+                                   + matches.get(0) + " ");
+            else{
+                String tack_on = "";
+                for(String s : matches){
+                    tack_on += "    " + s + "\n";
+                }
+                jTextArea1.setText(jTextArea1.getText() + "\n" + tack_on + "~~> " + search);
+                state.set_cursor_position(state.get_cursor_position() + tack_on.length() + search.length() + 5);
+            }
+        }
         if(key == KeyEvent.VK_BACK_SPACE){
             if(jTextArea1.getText().charAt(jTextArea1.getCaretPosition()-1) == '>'){
                 jTextArea1.setText(jTextArea1.getText() + " ");
+                
             } 
         }
         

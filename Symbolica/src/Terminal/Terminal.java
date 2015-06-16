@@ -1,19 +1,20 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Name: Alec Farfan
+ * Date: 06/10/15
+ * Purpose: Terminal class used to control the Terminal_UI
  */
 
 package Terminal;
 
-// Import
-import java.util.Scanner;
+// Import libraries
 import java.util.Queue;
 import java.util.LinkedList;
 import Calculus.Differential.*;
 import Calculus.Integral.*;
 import Linear_Algebra.*;
+import Vector_Function.*;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.ArrayList;
 
 /**
@@ -22,43 +23,184 @@ import java.util.ArrayList;
  */
 public class Terminal {
     
-    private boolean alive;
-    private HashMap<String,String> functions;
-    private HashMap<String,String> vector_functions;
-    private HashMap<String,String> matrices;
-    ArrayList<String> history;
-    private int history_index;
+    private HashMap<String,String> functions;   // Container for regular functions
+    private HashMap<String,String> vector_functions; // Container for vector functions
+    private HashMap<String,String> matrices;    // Container for matrices
+    private HashSet<String> commands;           // Container for known comands
+    private ArrayList<String> history;          // Container for issued commands
+    private int history_index;// Variable used in retrival of commands from history
+    private boolean alive;    // Variable used to flag end of session
     
+    /**
+     * Constructor for the Terminal class. Instantiates new HashMap objects
+     * to store the functions, vector functions, and matrices that the user
+     * defines. Instantiates and fills a HashSet 'commands' with all the known
+     * terminal commands. Instantiates an ArrayList to store the commands the
+     * user issues. Initializes history_index to 0 and sets alive to true.
+     */
     public Terminal(){
         
         functions = new HashMap();
+        vector_functions = new HashMap();
+        matrices = new HashMap();
+        commands = fill_commands();
         history = new ArrayList();
         history_index = 0;
         alive = true;
         
     }
     
-    public void set_alive(boolean value){
+    /**
+     * Setter method for the functions field. Sets the calling object's 
+     * functions field to the HashMap passed into the parameter
+     * @param functions The HashMap to be assigned to the calling objects
+     *                  functions field
+     */
+    public void set_functions(HashMap<String,String> functions){
         
-        alive = value;
+        this.functions = functions;
         
     }
     
-    public boolean get_alive(){
+    /**
+     * Getter method for the functions field.
+     * @return The calling object's functions field
+     */
+    public HashMap<String,String> get_functions(){
         
-        return alive;
+        return functions;
         
     }
     
+    /**
+     * Setter method for the vector_functions field. Sets the calling object's
+     * vector_functions field to the HashMap passed into the parameter.
+     * @param vector_functions The HashMap to be assigned to the calling
+     *                         object's vector_functions field.
+     */
+    public void set_vector_functions(HashMap<String,String> vector_functions){
+        
+        this.vector_functions = vector_functions;
+        
+    }
+    
+    /**
+     * Getter method for the vector_functions field
+     * @return The calling object's vector_functions field
+     */
+    public HashMap<String,String> get_vector_functions(){
+        
+        return vector_functions;
+        
+    }
+    
+    /**
+     * Setter method for the matrices field. Sets the calling object's matrices
+     * field to the HashMap passed into the parameter
+     * @param matrices The HashMap to be assigned to the calling object's
+     *                 matrices field
+     */
+    public void set_matrices(HashMap<String,String> matrices){
+        
+        this.matrices = matrices;
+        
+    }
+    
+    /**
+     * Getter method for the matrices field.
+     * @return The calling object's matrices field.
+     */
+    public HashMap<String,String> get_matrices(){
+        
+        return matrices;
+        
+    }
+    
+    /**
+     * Setter method for the commands field. Sets the calling object's commands
+     * field to the HashSet passed into the parameter.
+     * @param commands The HashSet to be assigned to the calling object's
+     *                 commands field.
+     */
+    public void set_commands(HashSet<String> commands){
+        
+        this.commands = commands;
+        
+    }
+    
+    /**
+     * Getter method for the commands field. 
+     * @return The calling object's commands field.
+     */
+    public HashSet<String> get_commands(){
+        
+        return commands;
+        
+    }
+    
+    /**
+     * Setter method for the history field. Sets the calling object's history
+     * field to the ArrayList passed into the parameter
+     * @param history The ArrayList to be assigned to the calling object's
+     *                history field.
+     */
+    public void set_history(ArrayList<String> history){
+        
+        this.history = history;
+        
+    }
+    
+    /**
+     * Getter method for the history field.
+     * @return The calling object's history field.
+     */
+    public ArrayList<String> get_history(){
+        
+        return history;
+        
+    }
+    
+    /**
+     * Setter method for the history_index field. Sets the calling object's
+     * history_index field to the integer value passed into the parameter.
+     * @param history_index The integer value to be assigned to the calling
+     *                      object's history_index field.
+     */
     public void set_history_index(int history_index){
         
         this.history_index = history_index;
         
     }
     
+    /**
+     * Getter method for the history_index field.
+     * @return The calling object's history_index field
+     */
     public int get_history_index(){
         
         return history_index;
+        
+    }
+    
+    /**
+     * Setter method for the alive field. Sets the calling object's alive field
+     * to the boolean value passed into the parameter.
+     * @param alive The boolean value to be assigned to the calling object's
+     *              alive field.
+     */
+    public void set_alive(boolean alive){
+        
+        this.alive = alive;
+        
+    }
+    
+    /**
+     * Getter method for the alive field.
+     * @return The calling object's alive field.
+     */
+    public boolean get_alive(){
+        
+        return alive;
         
     }
     
@@ -70,6 +212,21 @@ public class Terminal {
         else{
                 return "$";
         }
+        
+    }
+    
+    public HashSet<String> fill_commands(){
+        
+        HashSet commands = new HashSet();
+        commands.add("define");
+        commands.add("differentiate");
+        commands.add("integrate");
+        commands.add("print");
+        commands.add("invert");
+        commands.add("clear");
+        commands.add("exit");
+        
+        return commands;
         
     }
     
@@ -91,6 +248,9 @@ public class Terminal {
                     
             case "print":
                 return ("    " + functions.toString());
+            
+            case "invert":
+                return invert(input);
              
             case "clear":
                 return clear();
@@ -114,10 +274,11 @@ public class Terminal {
         String function = clean(get_function(input));
         if(function.charAt(0) == '['){
             make_matrix(function);
+            matrices.put(name,function);
         }
             
         if(function.charAt(0) == '<')
-            System.out.println("Vector Function");
+            System.out.println(make_vector_function(function).to_string());
         functions.put(name,function);
         
     }
@@ -145,6 +306,16 @@ public class Terminal {
         }
         
         return null;
+        
+    }
+    
+    public String invert(String input){
+        
+        String name = get_name(input);
+        Matrix a = make_matrix(matrices.get(name));
+        a = a.matrix_inverse(a);
+        
+        return a.to_string();
         
     }
     
@@ -230,9 +401,35 @@ public class Terminal {
             }
         }
         
-        a.print();
-        
         return a;
+        
+    }
+    
+    public Vector_Function make_vector_function(String input_line){
+        
+        input_line = input_line.substring(1,input_line.length()-1);
+        Queue<String> entries = new LinkedList();
+        String entry = "";
+        int dimension = 0;
+        
+        for(int i = 0; i < input_line.length(); i++){
+            if(input_line.charAt(i) != ',')
+                entry += input_line.charAt(i);
+            else{
+                entries.add(entry);
+                entry = "";
+                dimension++;
+            }   
+        }
+        entries.add(entry);
+        dimension++;
+        
+        Vector_Function f = new Vector_Function(dimension);
+        for(int i = 0; i < dimension; i++){
+            f.assign_component(entries.remove(),i);
+        }
+        
+        return f;
         
     }
     
