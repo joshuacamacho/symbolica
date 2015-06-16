@@ -310,6 +310,11 @@ public class Matrix{
         
     }
     
+    /**
+     * Method for transforming a matrix to its row echelon form(Row Echelon Form)
+     * @param a The matrix to reduce to row echelon form
+     * @return The row echelon form of a REF(a)
+     */
     public Matrix row_echelon_form(Matrix a){
     
         Matrix result = a;
@@ -356,6 +361,12 @@ public class Matrix{
         
     }
     
+    /**
+     * Method for transforming a matrix to its reduced row echelon form
+     * (Reduced Row Echelon Form)
+     * @param a The matrix to be transformed to reduced row echelon form
+     * @return  The reduced row echelon form of a RREF(a)
+     */
     public Matrix reduced_row_echelon_form(Matrix a){
     
         Matrix result = a.row_echelon_form(a);
@@ -372,6 +383,13 @@ public class Matrix{
         
     }
     
+    /**
+     * Method for interchanging two rows of a matrix
+     * @param a    The matrix to be modified
+     * @param row1 The first row to be interchanged
+     * @param row2 The second row to be interchanged
+     * @return     The matrix a with row1 interchanged with row2
+     */
     public Matrix interchange_rows(Matrix a,int row1,int row2){
         
         Matrix result = a;
@@ -392,6 +410,13 @@ public class Matrix{
         
     }
     
+    /**
+     * Method for reducing the pivot row in the row echelon form algorithm
+     * @param a      The matrix to be modified
+     * @param row    The row the pivot is contained in
+     * @param scalar The scalar to divide the pivot by
+     * @return       The matrix a with its pivot row turned into a leading 1
+     */
     public Matrix reduce_pivot(Matrix a,int row,float scalar){
     
         Matrix result = a;
@@ -402,6 +427,14 @@ public class Matrix{
         
     }
     
+    /**
+     * Method for multiplying a single row by a scalar
+     * @param a       The matrix to be modified
+     * @param row_num The row to be multiplied by a scalar
+     * @param size    The number of entries to be scaled
+     * @param scalar  The real number to scale the given row by
+     * @return        The matrix a with the given row scaled by the given scalar
+     */
     public float[] scale_row(Matrix a,int row_num, int size,float scalar){
   
         float new_row[] = new float[size];
@@ -413,6 +446,13 @@ public class Matrix{
         
     }
     
+    /**
+     * Method for adding a row to another
+     * @param a        The matrix to be modified
+     * @param row_num  The row of the matrix to be modified
+     * @param row      The row to be added to another
+     * @return         The matrix a after the row has been added to another
+     */
     public Matrix add_row(Matrix a,int row_num,float[] row){
     
         Matrix result = a;
@@ -423,6 +463,12 @@ public class Matrix{
         
     }
     
+    /**
+     * Method to remove entries with value -0.0 and replace them with 0.0
+     * Caused by the definition of negative numbers in Java
+     * @param a The matrix to be modified
+     * @return  Matrix a with any -0.0's replaced with 0.0
+     */
     public Matrix clear_negative_zeros(Matrix a){
     
         Matrix result = a;
@@ -437,6 +483,11 @@ public class Matrix{
         return result;
     }
     
+    /** 
+     * Method for finding the inverse of a matrix (Matrix Inverse)
+     * @param a The matrix a to find the invese of
+     * @return The matrix a^-1
+     */
     public Matrix matrix_inverse(Matrix a){
     
         Matrix merge = new Matrix(a.get_rows(),a.get_collumns()*2);
@@ -468,6 +519,11 @@ public class Matrix{
         
     }
     
+    /**
+     * Method for finding the LU factorization of a matrix (LU Factorization)
+     * @param a The matrix to be factored
+     * @return  An ArrayList of 2 matrices lu = a
+     */
     public ArrayList<Matrix> lu_decompisition(Matrix a){
     
         ArrayList<Matrix> lu = new ArrayList();
@@ -532,6 +588,11 @@ public class Matrix{
         
     }
     
+    /**
+     * Method for finding an identity matrix
+     * @param a The matrix to find an identity for
+     * @return  The identity matrix of a (In)
+     */
     public Matrix identity_matrix(Matrix a){
     
         Matrix result = new Matrix(a.get_rows(),a.get_collumns());    
@@ -557,6 +618,11 @@ public class Matrix{
         
     }
     
+    /**
+     * Method for calculating the determinant of a matrix
+     * @param a The matrix to find the determinant of
+     * @return  The determinant of a det(a)
+     */
     public float determinant(Matrix a){
     
         if(a.get_rows()==2){
@@ -573,6 +639,12 @@ public class Matrix{
         return 0;
     }
     
+    /**
+     * Finds the row or column with the most 0's to use in the determinant 
+     * algorithm
+     * @param a The matrix a to find the best row of
+     * @return  An array of floats containing the best row
+     */
     public float[] find_best(Matrix a){
     
         float best[] = new float[a.get_rows()+2];
@@ -625,6 +697,14 @@ public class Matrix{
         
     }
     
+    /**
+     * Method for finding the minor of a matrix
+     * @param a        The matrix to search for the minor
+     * @param place    The index 
+     * @param position The row to ignore
+     * @param index    The column to ignore
+     * @return         A matrix representing the proper minor
+     */
     public Matrix reduce_determinant(Matrix a,float place,float position,int index){
     
         Matrix result = new Matrix(a.get_rows()-1,a.get_rows()-1);
@@ -649,6 +729,27 @@ public class Matrix{
         }
         
         return result;
+    }
+ 
+    /**
+     * Creates a string representing the matrix to be printed to the terminal
+     * screen. Each row of the matrix is printed on it's own line.
+     * @return A string representing the matrix given in the string
+     */
+    public String to_string(){
+        
+        String matrix_string = "    ";
+        
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < collumns; j++){
+                matrix_string += array[i][j] + " ";
+            }
+            if(i != rows-1)
+                matrix_string += "\n    ";
+        }
+        
+        return matrix_string;
+        
     }
     
 }
