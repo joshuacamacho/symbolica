@@ -109,4 +109,24 @@ public class Vector_Function {
         
     }
     
+    /**
+     * Creates a string representing the vector function to be printed to the
+     * terminal screen. ex "<sin(x),cos(x),ln(x)>"
+     * @return A String representing the vector function
+     */
+    public String to_string(){
+        
+        String result = "<";
+        
+        for(int i = 0; i < dimension; i++){
+            result += get_component(i);
+            if(i != dimension - 1)
+                result += ",";
+        }
+        
+        result += ">";
+        
+        return result;
+        
+    }
 }
